@@ -1,38 +1,30 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 /**
  *  Authenticates routes
  */
 Auth::routes();
 
-Route::get('/auth', function (){
-    if(Auth::check()){ return redirect('/home'); }
-    return view('auth.auth');
-})->name('auth');
+/**
+ *  Guest Index Route
+ */
+Route::get('/', function (){return view('index');})->name('index');
 
+/**
+ *  Account Activation routes
+ */
+Route::get('/auth/activate', 'Auth\ActivationController@activate')->name('auth.activate');
+Route::get('/auth/activate/resend', 'Auth\ActivationResendController@showResendForm')->name('auth.activate.resend');
+Route::post('/auth/activate/resend', 'Auth\ActivationResendController@resend');
 
+/**
+ *  Feed routes
+ */
+Route::get('/feed', 'HomeController@index')->name('feed');
 
-Route::get('/', function () {
-    return view('index');
-})->name('index');
-
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route:: get('/meeting', [
-    'as'=> 'meeting',
-
-    'middleware'=> 'auth'
-]);
+/**
+ *  Events routes
+ */
+Route::get('/events', 'EventController@index')->name('events');
+Route::get('/event/{eventId}', 'EventController@event')->name('event');
+Route::get('/event/participate/{eventId}', 'EventController@participate')->name('event.participate');

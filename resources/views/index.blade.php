@@ -2,7 +2,7 @@
 @section('content')
 
     <div class="flex-center full-screen">
-        <a href="{{ route('meeting') }}" class="card" style="max-width: 300px; width: 100%">
+        <a href="" class="card" style="max-width: 300px; width: 100%">
 
                 <header>
                     <i data-feather="calendar"></i>

@@ -2,64 +2,29 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Events\Auth\UserRequestedActivationEmail;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
-    /**
-     *  Reload method
-     *  return auth.auth view
-     */
-    public function showRegistrationForm()
-    {
-        // return view('auth.auth');
-        return redirect('/auth');
-    }
+    protected $redirectTo = '/login';
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
         return Validator::make($data, [
             'login' => 'required|string|max:25',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:191|unique:users',
             'password' => 'required|string|min:7|confirmed',
         ]);
     }
@@ -76,6 +41,22 @@ class RegisterController extends Controller
             'login' => $data['login'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'active' => false,
+            'activation_token' => str_random(100),
         ]);
+    }
+
+    protected function registered(Request $request, $user)
+    {
+        $this->guard()->logout();
+
+        /* show resend activation link */
+        $user->request_reactivation_link($request);
+
+        /* send activation link message */
+        event(new UserRequestedActivationEmail($user));
+
+        return redirect($this->redirectPath())
+            ->with('success', 'Registered. Please check your email to activate your account.');
     }
 }

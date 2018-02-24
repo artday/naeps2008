@@ -2,48 +2,56 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
-    /**
-     *  Reload method
-     *  return auth.auth view
-     */
-    public function showLoginForm()
-    {
-        //return view('auth.auth');
-        return redirect('/auth');
-    }
+    protected $redirectTo = '/feed';
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function validateLogin(Request $request)
+    {
+        /* Show reactivation link if email owner is not active */
+        User::reactivationLinkIfNotActive($request);
+
+        $this->validate($request, [
+            $this->username() => [
+                'required',
+                'email',
+                'string',
+                'exists:users,email',
+                'is_true:users,active' // Custom validation in ServiceProvider
+            ],
+            'password' => 'required|string',
+        ], $this->validationErrors());
+    }
+
+    protected function validationErrors()
+    {
+        return [
+            $this->username() . '.is_true' => 'You need to activate your account.',
+            $this->username() . '.exists' => 'There is no user with that email.'
+        ];
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        /* Delete activation link if logged in */
+        $user->forget_reactivation_link($request);
     }
 }

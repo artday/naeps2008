@@ -68,20 +68,29 @@ ul.accordion{
   }
 }
 
-.auth-toggler{
-  font-size: 0.8rem;
+.auth{
 
-  height: 100%;
+}
+
+
+.slider-toggler{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  font-size: 0.8rem;
   justify-content: space-around;
 
   label{
+    color: white;
     flex: 1 1 50%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-
+    padding: 0.7rem;
+    background: $niceBlueColor;
     &.focus{
       background: #2475a5;
     }
@@ -126,7 +135,7 @@ input[type=radio].slider-radio{
   max-width: 400px;
   width: 100%;
   box-shadow: 1px 2px 5px 1px rgba(0,0,0,0.2);
-  padding: 1rem 2rem 2rem 2rem;
+  padding: 2rem;
   background: white;
   // hide all in slider wrapper
   &>*{
@@ -134,7 +143,17 @@ input[type=radio].slider-radio{
   }
 }
 
+.form-heading{
+  display: block;
+  height: 100%;
+  width: 100%;
+  padding: .5rem;
+  border-bottom: 1px #ebebeb solid;
+  text-align: center;
+}
+
 .res-form{
+  display: block;
   width: 100%;
   .res-form-group{
     //padding-top: 2rem;
@@ -171,8 +190,14 @@ input[type=radio].slider-radio{
 
       &.focus{
         color: #4285f4;
-        transform: scale(.75) translateY(-2.5rem);
+        transform: scale(.75) translateY(-2.2rem);
       }
+    }
+
+    &.form-error *{
+      color: red !important;
+      border-color: red !important;
+
     }
 
   }
@@ -180,6 +205,13 @@ input[type=radio].slider-radio{
   &>*{
     display: block;
     margin-top: 2rem;
+  }
+
+  .help-block{
+    width: 100%;
+    position: absolute;
+    font-size: 0.7rem;
+    bottom: -1.3rem;
   }
 
   button{
@@ -220,6 +252,31 @@ input[type=radio].slider-radio{
     text-decoration: underline;
   }
 }
+
+/* USer */
+.user-block{
+  position: relative;
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+    height: 40px;
+    padding-right: 40px;
+    display: flex;
+    //align-items: center;
+
+  .-image{
+    height: 100%;
+    border-radius: 100%;
+    overflow: hidden;
+  }
+  .-profile-info{
+    padding-left: 0.8rem;
+  }
+  .-name, .-mail{
+    display: block;
+  }
+}
+
+
 
 /**/
 
@@ -298,7 +355,7 @@ input[type=radio].slider-radio{
     height: 1rem;
     width: 1rem;
   }
-  &:hover{
+  &:hover , &.focus{
     background: #2475a5;
   }
 }
@@ -317,6 +374,7 @@ a.btn, div.btn a, button.btn{
     border-radius: 0;
   }
   &.-full{
+    width: 100%;
     .btn{
       flex: 1 1 auto;
     }
@@ -326,6 +384,17 @@ a.btn, div.btn a, button.btn{
   }
   &.-left{
     justify-content: flex-start;
+  }
+}
+
+/* Alerts */
+.alert{
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  color: white;
+  &.alert-success{
+    background: #82ca82;
   }
 }
 

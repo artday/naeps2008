@@ -44,7 +44,7 @@
 *  'focused' labels on radio inputs checked
 */
 (function(){
-    var togglerClass = '.auth-toggler ';
+    var togglerClass = '.slider-toggler ';
     var togglerFocusClass = 'focus';
     var logId = 'login'; var regId = 'register';
     var login = document.getElementById(logId);
