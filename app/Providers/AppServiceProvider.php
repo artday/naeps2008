@@ -31,6 +31,23 @@ class AppServiceProvider extends ServiceProvider
             $user = DB::table($parameters[0])->where($attribute, $value)->where($parameters[1], false)->first();
             return($user && $user->$attribute === $value);
         });
+
+        /* Validate on unique except id. Example: */
+        Validator::extend('unique_except_id', function ($attribute, $value, $parameters, $validator){
+            $user = DB::table($parameters[0])->where($attribute, $value)->get();
+            if(!count($user)){
+                return true;
+            }
+            if (count($user)>1){
+                return false;
+            }
+            if($user[0]->id == $parameters[1]){
+                return true;
+            }
+            return false;
+//            $user = DB::table($parameters[0])->where($attribute, $value)->where($parameters[1], true)->first();
+//            return($user && $user->$attribute === $value);
+        });
     }
 
     /**

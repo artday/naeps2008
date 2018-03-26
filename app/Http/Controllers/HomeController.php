@@ -15,6 +15,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('feed');
+        return view('feed')->with('user', request()->user());
     }
 }

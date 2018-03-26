@@ -5,7 +5,7 @@
 @endif
 
 @if (Session::has('info'))
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-info" role="alert">
         Info: {{ Session::get('info') }}
     </div>
 @endif

@@ -28,11 +28,6 @@ class Event extends Model
         return $date->format('d.m.Y');
     }
 
-//    public function getAParticipants()    {
-//
-//        return $this->participants()->where('event_id', $this->id);
-//    }
-
     /**
      * Morph to location.
      */
@@ -49,8 +44,22 @@ class Event extends Model
         return $this->morphMany('App\Models\Date', 'datable');
     }
 
+
     public function participants()
     {
-        return $this->hasMany('App\Models\EventParticipant');
+        return $this->users()->get();
     }
-}
+
+    public function isParticipant()
+    {
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(
+            'App\Models\User',
+            'event_participants',
+            'event_id',
+            'user_id');
+    }}
+

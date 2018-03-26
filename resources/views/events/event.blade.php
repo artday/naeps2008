@@ -1,28 +1,39 @@
 @extends('layouts.default')
 @section('content')
+
             <h3>{{ $event->name }}</h3>
-            <br>
-            <div style="float: left">
-                <i data-feather="calendar" style="color: silver"></i>
-                <strong>Дата: </strong>
-                {{ $event->date() }}
+            <div class="v-center" >
+                <i data-feather="calendar"></i>
+                <span>
+                    <strong>Дата:</strong> {{ $event->date() }} (на голосуванні)
+                </span>
             </div>
-            <div>
-                <i data-feather="map-pin" style="color: silver"></i>
-                <strong>Місто: </strong>
-                {{ $event->location() }}
+            <div class="v-center">
+                <i data-feather="map-pin"></i>
+                <span>
+                    <strong>Місто: </strong>{{ $event->location() }}
+                </span>
             </div>
-            <br>
-            <div>
-                <i data-feather="users" style="color: silver"></i>
-                <strong>Учасники ({{ $event->participants->count() }}): </strong>
-                @foreach($event->participants as $participant)
-                    {{ $participant->user->login }}
-                @endforeach
-                {{--Король Василь, Шевченко Юрій, Діма Юрченко, Тромпак Василь--}}
+            <div class="v-center">
+                <i data-feather="users"></i>
+                <span>
+                    <strong>Учасники ({{ $event->participants()->count() }}): </strong>
+                    @foreach($event->participants() as $participant)
+                        {{ $participant->login }}
+                    @endforeach
+                </span>
             </div>
 
-            <div class="btn-gr -right">
-                <a class="btn"><i data-feather="plus"></i><span>Взяти участь</span></a>
-            </div>
+            @if(!Auth::user()->isParticipant($event))
+                <div class="btn-gr -right">
+                    <a class="btn" href="{{ route('event.participate', ['eventId'=>$event->id]) }}">
+                        <i data-feather="plus"></i>
+                        <span>Взяти участь</span>
+                    </a>
+                </div>
+            @endif
+
+
+
+
 @endsection

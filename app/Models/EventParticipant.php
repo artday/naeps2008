@@ -2,25 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class EventParticipant extends Model
+class EventParticipant extends Pivot
 {
-    protected $table = 'event_participants';
 
-    protected $fillable = [
-        'user_id', 'event_id'
-    ];
-
-
-
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User', 'user_id');
-    }
-
-    public function event()
-    {
-        return $this->belongsTo('App\Models\Event', 'event_id');
-    }
 }

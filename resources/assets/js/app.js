@@ -74,7 +74,7 @@
 * Animate labels for inputs when it focused and value is set
 */
 (function(){
-    var formGroups = document.querySelectorAll('.slider-wrapper form.res-form .res-form-group');
+    var formGroups = document.querySelectorAll('form.res-form .res-form-group');
     formGroups.forEach(function(group){
         var input = group.getElementsByTagName('input')[0];
         var label = group.querySelector('label[for='+ input.id +']');

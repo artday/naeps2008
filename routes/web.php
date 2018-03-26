@@ -8,7 +8,7 @@ Auth::routes();
 /**
  *  Guest Index Route
  */
-Route::get('/', function (){return view('index');})->name('index');
+Route::get('/', function (){return view('index')->with('user', request()->user());})->name('index');
 
 /**
  *  Account Activation routes
@@ -22,9 +22,20 @@ Route::post('/auth/activate/resend', 'Auth\ActivationResendController@resend');
  */
 Route::get('/feed', 'HomeController@index')->name('feed');
 
+
+/**
+ *  Profile routes
+ */
+Route::get('/profile/update', 'ProfileController@getUpdate')->name('profile.update');
+Route::post('/profile/update', 'ProfileController@postUpdate');
+
+Route::get('/profile/{user?}', 'ProfileController@index')->name('profile');
+Route::get('/people', 'ProfileController@people')->name('people');
+
 /**
  *  Events routes
  */
 Route::get('/events', 'EventController@index')->name('events');
-Route::get('/event/{eventId}', 'EventController@event')->name('event');
-Route::get('/event/participate/{eventId}', 'EventController@participate')->name('event.participate');
+Route::get('/event/{event}', 'EventController@event')->name('event');
+Route::get('/event/{event}/participate', 'EventController@participate')->name('event.participate');
+Route::get('/event/{event}/leave', 'EventController@leaveEvent')->name('event.leave');

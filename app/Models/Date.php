@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Date;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Date extends Model

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use App\Models\EventParticipant;
+use App\Models\EventParticipant as Participant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,36 +21,36 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::get();
-        return view('events.index')->with('events', $events);
+        return view('events.index')->with('user', request()->user())->with('events', $events);
     }
 
     /**
      *  return event
      */
-    public function event(Request $request)
+    public function event(Event $event)
     {
-        $event = Event::find($request->eventId);
-        return view('events.event', ['event'=>$event]);
+        return view('events.event', compact('event'))->with('user', request()->user());
     }
 
 
-    public function participate(Request $request)
+
+    public function participate(Event $event)
     {
-        $event = Event::find($request->eventId);
 
-//        if(Auth::user()->isParticipant($event))
-        if(Auth::user()->isParticipant($event))
+        if($event->users()->where('user_id', Auth::user()->id)->first())
         {
-            return redirect()->back()->with('warning', 'Ви вже приєднані до події');
+            return back()->with('warning', 'Ви вже учасник події');
         }
-        EventParticipant::create([
-            'user_id'=>Auth::user()->id,
-            'event_id'=> $event->id
-        ]);
 
-//        dd($participant);
+        $event->users()->attach(Auth::user()->id);
 
         return redirect()->back()->with('success', 'Ви прийняли участь у події');
+    }
+
+    public function leaveEvent(Event $event)
+    {
+        $event->users()->detach(Auth::user()->id);
+        return redirect()->back()->with('success', 'Ви залишили подію');
     }
 
 }

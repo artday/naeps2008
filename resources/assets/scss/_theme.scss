@@ -92,7 +92,7 @@ ul.accordion{
     padding: 0.7rem;
     background: $niceBlueColor;
     &.focus{
-      background: #2475a5;
+      background: $niceLightBlueColor;
     }
   }
   a{
@@ -105,7 +105,7 @@ ul.accordion{
     padding: 0 1rem;
     float: right;
     &:hover{
-      background: #2475a5;
+      background: $niceLightBlueColor;
     }
   }
 
@@ -256,11 +256,14 @@ input[type=radio].slider-radio{
 /* USer */
 .user-block{
   position: relative;
-    font-size: 0.8rem;
-    line-height: 1.2rem;
-    height: 40px;
-    padding-right: 40px;
-    display: flex;
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+  height: 40px;
+  padding-right: 40px;
+  margin: 1rem 0 1rem 1rem;
+  display: flex;
+  text-decoration: none;
+  color: $niceBlueColor;
     //align-items: center;
 
   .-image{
@@ -276,6 +279,23 @@ input[type=radio].slider-radio{
   }
 }
 
+.side-navbar {
+  .user-block{
+    color: white;
+  }
+
+  nav{
+
+    li{
+      height: 2.5rem;
+      padding-left: 1rem;
+
+      &:hover{
+        background: $niceDarkBlueColor;
+      }
+    }
+  }
+}
 
 
 /**/
@@ -343,6 +363,10 @@ input[type=radio].slider-radio{
 
 
 /* Helper classes */
+a.clr{
+  text-decoration: none;
+}
+
 
 /* Buttons */
 .btn{
@@ -387,6 +411,28 @@ a.btn, div.btn a, button.btn{
   }
 }
 
+
+.v-center{
+  display: flex;
+  align-items: center;
+  *{
+  }
+}
+
+.link-header{
+  a{
+    text-decoration: none;
+  }
+}
+
+/* Icons */
+svg{
+  color: silver;
+  //padding: 0.1rem;
+  margin: 0.5rem;
+}
+
+
 /* Alerts */
 .alert{
   width: 100%;
@@ -395,6 +441,9 @@ a.btn, div.btn a, button.btn{
   color: white;
   &.alert-success{
     background: #82ca82;
+  }
+  &.alert-info{
+    background: $niceLightBlueColor;
   }
 }
 
@@ -427,12 +476,14 @@ a.card{
     }
   }
 
-  svg{
-    display: block;
-    position: relative;
-    color: white;
-    float: left;
-    margin-right: 1rem;
+  header{
+    svg{
+      display: block;
+      position: relative;
+      color: white;
+      float: left;
+      margin-right: 1rem;
+    }
   }
   .btn{
     float: right;

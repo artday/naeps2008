@@ -13,16 +13,21 @@ class ActivationController extends Controller
     {
         $user = User::byActivationColumns($request->email, $request->token)->firstOrFail();
 
-        /* Delete reactivation link */
-        $user->forget_reactivation_link($request);
+        /* Activate user */
+        $user->activate();
 
-        $user->update([
+
+        /*$user->update([
             'active' => true,
             'activation_token' => null
-        ]);
+        ]);*/
 
+
+
+        /* Log User in by id */
         Auth::loginUsingId($user->id);
 
+        /* Redirecting User */
         return redirect()->route('feed')
             ->with('success', 'Activated! You\'re now signed in.');
     }
